@@ -2,17 +2,19 @@
 
 import logging
 
-log=None
+log = None
+
 
 def init_logger(debug=False):
     global log
     if not log:
-        formatter=logging.Formatter(fmt= '[%(levelname)1.1s %(asctime)s %(module)s:%(lineno)d] %(message)s', datefmt = '%y%m%d %H:%M:%S')
-        handler=logging.StreamHandler()
+        formatter = logging.Formatter(
+            fmt='[%(levelname)1.1s %(asctime)s %(module)s:%(lineno)d] %(message)s', datefmt='%y%m%d %H:%M:%S')
+        handler = logging.StreamHandler()
         handler.setFormatter(formatter)
-        logger=logging.getLogger(__name__)
+        logger = logging.getLogger(__name__)
         logger.addHandler(handler)
-        log=logger
+        log = logger
     if debug:
         log.setLevel(logging.DEBUG)
     else:
@@ -21,18 +23,20 @@ def init_logger(debug=False):
 
 init_logger()
 
-def query_log(msg,resp,func=None,suffix='',*args,**kwargs):
+
+def query_log(msg, resp, func=None, suffix='', *args, **kwargs):
     if func:
-        tmp=func(resp)
-        if resp.status_code==200 and func(resp):
-            msg=msg+' '+'success'
+        tmp = func(resp)
+        if resp.status_code == 200 and func(resp):
+            msg = msg+' '+'success'
             log.info(msg+suffix)
-    elif resp.status_code==200:
-            msg=msg+' '+'success'
-            log.info(msg+suffix)
+    elif resp.status_code == 200:
+        msg = msg+' '+'success'
+        log.info(msg+suffix)
     else:
-        msg=msg+' '+'success'
+        msg = msg+' '+'success'
         log.warn(msg+suffix)
+
 
 if __name__ == '__main__':
     log.info('log test info')
