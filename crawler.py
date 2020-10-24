@@ -120,13 +120,13 @@ class LukouCrawler():
         feed_act = item.find("div", class_="feed-act")
         if feed_act:
             comment = feed_act.find("a", class_="feed-comment").find("b").text
-            ret["comment"] = comment if comment != '评论' else 0
+            ret["comment"] = int(comment) if comment != '评论' else 0
             forward = feed_act.find("a", class_="feed-forward").find("b").text
-            ret["forward"] = forward if forward != '转发' else 0
+            ret["forward"] = int(forward) if forward != '转发' else 0
             praize = feed_act.find("a", class_="feed-praize").find("b").text
-            ret["praize"] = praize if praize != '赞' else 0
+            ret["praize"] = int(praize) if praize != '赞' else 0
             collect = feed_act.find("a", class_="feed-collect").find("b").text
-            ret["collect"] = collect if collect != '收藏' else 0
+            ret["collect"] = int(collect) if collect != '收藏' else 0
 
         return ret
 
