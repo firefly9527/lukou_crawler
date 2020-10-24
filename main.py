@@ -6,11 +6,12 @@ import dataset_processer
 
 @click.command()
 @click.argument('keywords', nargs=-1)
-@click.option('--pages', '-P', default=1, help='page')
-@click.option('--start-page', '-S', default=1, help='start page')
-@click.option('--search-type', '-T', default=0, help='search_type: 0:宝贝, 1:文章, 3:专辑, 4:团购')
-@click.option('--sort-type', '-t', default=0, help='sort_type: 0:默认排序, 3:最新发布, 4:最热排序')
-def main(keywords, pages, start_page, search_type, sort_type):
+@click.option('--pages', '-P', '-p', default=1, help='爬取页数')
+@click.option('--start-page', '-S', default=1, help='起始页码')
+@click.option('--search-type', '-T', default=0, help='搜索类型: 0:宝贝, 1:文章, 3:专辑, 4:团购')
+@click.option('--sort-type', '-t', default=0, help='搜索排序: 0:默认排序, 3:最新发布, 4:最热排序')
+@click.option('--sort', '-s', default='collect', help='使用指定列排序排序列')
+def main(keywords, pages, start_page, search_type, sort_type, sort):
     keywords = ' '.join(keywords)
     if not keywords:
         raise ValueError
@@ -26,6 +27,7 @@ def main(keywords, pages, start_page, search_type, sort_type):
     result['feed_url'] = result['feed_url'].apply(
         dataset_processer.generate_excel_hyperlink)
     result = dataset_processer.filter_column(result)
+    result = dataset_processer.order_by(result, sort, False)
 
     result.to_excel(f'{keywords} {start_time_str}.xlsx',
                     index=False,
